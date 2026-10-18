@@ -1,10 +1,14 @@
 # trinks-mcp-server
 
-Servidor MCP **privado** para a API do [Trinks](https://developers.trinks.com) (agendamento de salão/clínica), rodando como um Cloudflare Worker. Cobre agendamentos, clientes, profissionais, serviços, produtos, financeiro (transações, NFS-e, lançamentos), fidelidade e clube de assinaturas — **42 tools**.
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/marcosvb1/trinks-mcp-cloudflare)
+
+Servidor MCP **privado** (atrás de auth) para a API do [Trinks](https://trinks.readme.io/reference) (agendamento de salão/clínica), rodando como um Cloudflare Worker. Cobre agendamentos, clientes, profissionais, serviços, produtos, financeiro (transações, NFS-e, lançamentos), fidelidade e clube de assinaturas — **42 tools**.
 
 **Multi-unidade:** se você tem mais de um estabelecimento (cada um com conta Trinks própria), configure `TRINKS_UNIDADES` e toda tool ganha o param opcional `unidade`. Ver [Unidades](#unidades).
 
-> Reescrito do zero sobre o mapa de endpoints do [`Vlarrate/trinks-mcp`](https://github.com/Vlarrate/trinks-mcp) (que serviu de referência da API, mas não segue as práticas de MCP nem tinha gate de auth). Ver [Diferenças](#diferenças-do-repo-de-referência).
+Todas as tools mapeiam 1:1 para operações do [OpenAPI oficial do Trinks](https://api.trinks.com/swagger/index.html) (`/swagger/v1/swagger.json`) — mesmo método e path. O spec tem mais operações do que as cobertas aqui (ex.: etiquetas de agendamento, comissões, recorrências de lançamento).
+
+> Reescrito do zero; o [`Vlarrate/trinks-mcp`](https://github.com/Vlarrate/trinks-mcp) serviu de referência inicial (mas não segue as práticas de MCP nem tinha gate de auth). Ver [Diferenças](#diferenças-do-repo-de-referência).
 
 ## Arquitetura
 
@@ -71,6 +75,14 @@ Ou via inspector visual: `npm run inspect` e aponte pra `http://localhost:8787/m
 
 ## Deploy
 
+### Botão (uma unidade)
+
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/marcosvb1/trinks-mcp-cloudflare)
+
+Cria uma cópia do repo na sua conta GitHub, faz o deploy via Workers Builds e pede três secrets: `TRINKS_API_KEY`, `TRINKS_ESTABELECIMENTO_ID` e `MCP_SHARED_SECRET`. Depois, ponha auth na frente (ver [Auth em produção](#auth-em-produção)) — sem portal/Access, o acesso é só pelo header `x-mcp-secret`. Para várias unidades, configure `TRINKS_UNIDADES` na cópia (ver [Unidades](#unidades)).
+
+### CLI
+
 O `wrangler.jsonc` versionado é genérico (modo uma unidade, sem `account_id`). Para um deploy com config própria — conta, várias unidades, Secrets Store — copie-o para `wrangler.local.jsonc` (gitignored), ajuste, e use `-c`:
 
 ```bash
@@ -107,7 +119,7 @@ npm run deploy -- -c wrangler.local.jsonc
 
 ## Diferenças do repo de referência
 
-O `Vlarrate/trinks-mcp` serviu de mapa de endpoints (que bate com a API oficial), mas aqui:
+O `Vlarrate/trinks-mcp` serviu de referência inicial, mas aqui:
 
 - **Auth:** ele expunha `/mcp` público sem gate → aqui Cloudflare Access (Managed OAuth) em prod, secret header em dev (o repo original vira um proxy aberto pra sua conta Trinks se deployado como documentado).
 - **SDK:** ele usa a API antiga (`setRequestHandler`) → aqui `registerTool` (moderna).

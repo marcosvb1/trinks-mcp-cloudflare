@@ -21,5 +21,18 @@
     "@cloudflare/workers-types": "^5.20260714.1",
     "typescript": "^7.0.2",
     "wrangler": "^4.110.0"
+  },
+  "cloudflare": {
+    "bindings": {
+      "TRINKS_API_KEY": {
+        "description": "API key do Trinks — gerada em **trinks.com › Minha Área › Meu Cadastro**."
+      },
+      "TRINKS_ESTABELECIMENTO_ID": {
+        "description": "ID do estabelecimento (clínica/salão) no Trinks, enviado no header `estabelecimentoId`."
+      },
+      "MCP_SHARED_SECRET": {
+        "description": "Segredo do header `x-mcp-secret` que protege o `/mcp`. Gere com `openssl rand -hex 32`."
+      }
+    }
   }
 }

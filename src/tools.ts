@@ -58,8 +58,8 @@ interface ToolSpec {
 }
 
 // ── Tool catalogue (42 tools) ───────────────────────────────────────────────
-// Endpoint map reverse-engineered from the Trinks REST API (v1) and cross-checked
-// against the official developer docs. Tools are prefixed `trinks_` to avoid
+// Every tool maps to one operation (same method + path) of the official Trinks
+// OpenAPI spec: https://api.trinks.com/swagger/v1/swagger.json. Tools are prefixed `trinks_` to avoid
 // name collisions when this server runs alongside others.
 const TOOL_SPECS: ToolSpec[] = [
   // ── AGENDAMENTOS ──────────────────────────────────────────────────────────

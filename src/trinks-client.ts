@@ -123,7 +123,7 @@ export async function clientForUnidade(env: Env, unidades: Unidades, nome: strin
 
 /**
  * Thin client for the Trinks REST API. Auth is `X-Api-Key` + an `estabelecimentoId`
- * header, matching the official docs (https://developers.trinks.com). One instance
+ * header, matching the official OpenAPI spec (https://api.trinks.com/swagger/v1/swagger.json). One instance
  * per request — cheap, holds no mutable state.
  */
 export class TrinksClient {
