@@ -16,9 +16,10 @@
   //
   // ── Várias unidades (uma conta Trinks por unidade) ────────────────────────
   // Cada unidade aponta pro binding que guarda a API key dela — um Worker
-  // secret ou um binding do Secrets Store. A primeira é o padrão (ou defina
-  // TRINKS_UNIDADE_PADRAO). Toda tool ganha o param opcional `unidade`.
+  // secret ou um binding do Secrets Store. TRINKS_UNIDADE_PADRAO (obrigatório)
+  // é a unidade usada sem `unidade`. Toda tool ganha o param opcional `unidade`.
   //   "vars": {
+  //     "TRINKS_UNIDADE_PADRAO": "matriz",
   //     "TRINKS_UNIDADES": {
   //       "matriz": { "estabelecimentoId": "123456", "apiKey": "MATRIZ_APIKEY" },
   //       "filial": { "estabelecimentoId": "654321", "apiKey": "FILIAL_APIKEY" }

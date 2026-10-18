@@ -13,7 +13,7 @@ export interface Env {
 
   /** Unit map — a JSON object in `wrangler.jsonc` vars, or a JSON string in `.dev.vars`. */
   TRINKS_UNIDADES?: string | Record<string, unknown>;
-  /** Default unit when a tool call omits `unidade`. Defaults to the first one in TRINKS_UNIDADES. */
+  /** Default unit when a tool call omits `unidade`. Required with more than one unit. */
   TRINKS_UNIDADE_PADRAO?: string;
 
   /** Trinks API key, sent as the `X-Api-Key` header (single-unit mode). */

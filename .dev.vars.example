@@ -8,6 +8,7 @@ TRINKS_ESTABELECIMENTO_ID="your-establishment-id"
 
 # ── Trinks: várias unidades (opcional; substitui as duas acima) ───────────────
 # JSON numa linha: unidade → estabelecimento + nome da variável com a API key.
+# TRINKS_UNIDADE_PADRAO="matriz"
 # TRINKS_UNIDADES='{"matriz":{"estabelecimentoId":"123456","apiKey":"MATRIZ_APIKEY"},"filial":{"estabelecimentoId":"654321","apiKey":"FILIAL_APIKEY"}}'
 # MATRIZ_APIKEY="api-key-da-matriz"
 # FILIAL_APIKEY="api-key-da-filial"

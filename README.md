@@ -36,6 +36,7 @@ src/
 
 ```jsonc
 "vars": {
+  "TRINKS_UNIDADE_PADRAO": "matriz",
   "TRINKS_UNIDADES": {
     "matriz": { "estabelecimentoId": "123456", "apiKey": "MATRIZ_APIKEY" },
     "filial": { "estabelecimentoId": "654321", "apiKey": "FILIAL_APIKEY" }
@@ -43,7 +44,7 @@ src/
 }
 ```
 
-- A primeira unidade é o padrão quando a tool é chamada sem `unidade` (ou defina `TRINKS_UNIDADE_PADRAO`).
+- Com mais de uma unidade, defina `TRINKS_UNIDADE_PADRAO` — a unidade usada quando a tool é chamada sem `unidade`. É obrigatório: a Cloudflare guarda o JSON com as chaves em ordem alfabética, então "a primeira" não é confiável.
 - Nomes de unidade: minúsculas, dígitos e hífen.
 - No `.dev.vars`, `TRINKS_UNIDADES` vai como string JSON numa linha (exemplo no `.dev.vars.example`).
 - Config inválida → o `/mcp` responde 500 com a mensagem do problema (só pra quem passou na auth).

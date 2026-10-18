@@ -90,6 +90,11 @@ export function loadUnidades(env: Env): Unidades {
   const config = result.data;
   const [primeira, ...demais] = Object.keys(config);
   if (!primeira) throw new ConfigError("TRINKS_UNIDADES não tem nenhuma unidade.");
+  // Key order is not a safe default: Cloudflare stores JSON vars with sorted keys,
+  // so "the first unit" can silently change. With several units, require it.
+  if (demais.length && !env.TRINKS_UNIDADE_PADRAO) {
+    throw new ConfigError("Com mais de uma unidade em TRINKS_UNIDADES, defina TRINKS_UNIDADE_PADRAO.");
+  }
   const padrao = env.TRINKS_UNIDADE_PADRAO || primeira;
   if (!config[padrao]) {
     throw new ConfigError(`TRINKS_UNIDADE_PADRAO "${padrao}" não existe em TRINKS_UNIDADES.`);
