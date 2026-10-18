@@ -2,11 +2,11 @@
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/marcosvb1/trinks-mcp-cloudflare)
 
-Servidor MCP **privado** (atrás de auth) para a API do [Trinks](https://trinks.readme.io/reference) (agendamento de salão/clínica), rodando como um Cloudflare Worker. Cobre agendamentos, clientes, profissionais, serviços, produtos, financeiro (transações, NFS-e, lançamentos), fidelidade e clube de assinaturas — **42 tools**.
+Servidor MCP **privado** (atrás de auth) para a API do [Trinks](https://trinks.readme.io/reference) (agendamento de salão/clínica), rodando como um Cloudflare Worker. Cobre agendamentos, clientes, profissionais, serviços, produtos, financeiro (transações, NFS-e, lançamentos), fidelidade, comissões e clube de assinaturas — **66 tools**, uma para cada operação da API.
 
 **Multi-unidade:** se você tem mais de um estabelecimento (cada um com conta Trinks própria), configure `TRINKS_UNIDADES` e toda tool ganha o param opcional `unidade`. Ver [Unidades](#unidades).
 
-Todas as tools mapeiam 1:1 para operações do [OpenAPI oficial do Trinks](https://api.trinks.com/swagger/index.html) (`/swagger/v1/swagger.json`) — mesmo método e path. O spec tem mais operações do que as cobertas aqui (ex.: etiquetas de agendamento, comissões, recorrências de lançamento).
+As tools cobrem **todas as 66 operações** do [OpenAPI oficial do Trinks](https://api.trinks.com/swagger/index.html) (`/swagger/v1/swagger.json`), 1:1 — mesmo método, path, query params e corpo, com as regras do spec (limites, enums, campos obrigatórios) nos schemas e descrições.
 
 > Reescrito do zero; o [`Vlarrate/trinks-mcp`](https://github.com/Vlarrate/trinks-mcp) serviu de referência inicial (mas não segue as práticas de MCP nem tinha gate de auth). Ver [Diferenças](#diferenças-do-repo-de-referência).
 
@@ -25,7 +25,7 @@ src/
   access.ts         verificação do Cf-Access-Jwt-Assertion (jose + JWKS do team)
   env.ts            interface Env
   trinks-client.ts  client REST: timeout 30s, erro actionable por status
-  tools.ts          catálogo das 42 tools (data-driven) + registro
+  tools.ts          catálogo das 66 tools (data-driven, 1:1 com o OpenAPI) + registro
 ```
 
 ## Unidades
@@ -126,12 +126,11 @@ O `Vlarrate/trinks-mcp` serviu de referência inicial, mas aqui:
 - **Annotations:** ele não tinha nenhuma → aqui `readOnlyHint`/`destructiveHint`/`idempotentHint` por tool (`excluir_cliente` e `cancelar_agendamento` marcados destrutivos).
 - **Nomes:** sem prefixo → aqui `trinks_*` (evita colisão com outros MCPs).
 - **Erros:** `catch` genérico → aqui mensagem específica por status (401/403/404/429/5xx) + timeout de 30s + guard de tamanho de resposta.
-- **Contagem:** o README dele diz "46 tools", mas o código implementa **42** (as que existem de fato).
+- **Contrato:** params e corpos seguem o OpenAPI oficial (as 66 operações), não o mapa do repo de referência.
 
 ## Pendências / a validar
 
-- **Não testado contra conta real.** Os paths batem com o padrão oficial; paginação e formato exato de resposta precisam de validação com a API viva. O client faz passthrough do corpo da API + guard de tamanho (não inventa contrato `has_more`).
-- **Zod `status`** em `listar_agendamentos` é string livre (não enum) até confirmar os valores que a API aceita no filtro.
+- **Contrato validado, execução parcial.** Método, path, query params e corpo de cada tool foram conferidos contra o `swagger.json`, mas nem todas as tools foram exercitadas contra a API viva. O client faz passthrough do corpo da resposta + guard de tamanho (não inventa contrato `has_more`).
 
 ## Licença
 
