@@ -1,0 +1,39 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "trinks-mcp-server",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-05-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+
+  // Config pública/genérica. A do seu deploy real (account_id, ids, bindings)
+  // fica em `wrangler.local.jsonc` (gitignored): `npm run deploy -- -c wrangler.local.jsonc`.
+
+  // ── Uma unidade (padrão) ──────────────────────────────────────────────────
+  // Sem TRINKS_UNIDADES, o Worker usa dois secrets:
+  //   npx wrangler secret put TRINKS_API_KEY
+  //   npx wrangler secret put TRINKS_ESTABELECIMENTO_ID
+  //
+  // ── Várias unidades (uma conta Trinks por unidade) ────────────────────────
+  // Cada unidade aponta pro binding que guarda a API key dela — um Worker
+  // secret ou um binding do Secrets Store. A primeira é o padrão (ou defina
+  // TRINKS_UNIDADE_PADRAO). Toda tool ganha o param opcional `unidade`.
+  //   "vars": {
+  //     "TRINKS_UNIDADES": {
+  //       "matriz": { "estabelecimentoId": "123456", "apiKey": "MATRIZ_APIKEY" },
+  //       "filial": { "estabelecimentoId": "654321", "apiKey": "FILIAL_APIKEY" }
+  //     }
+  //   },
+  //   "secrets_store_secrets": [
+  //     { "binding": "MATRIZ_APIKEY", "store_id": "<store id>", "secret_name": "TRINKS_MATRIZ_APIKEY" },
+  //     { "binding": "FILIAL_APIKEY", "store_id": "<store id>", "secret_name": "TRINKS_FILIAL_APIKEY" }
+  //   ]
+  //
+  // ── Auth ──────────────────────────────────────────────────────────────────
+  // Atrás de um portal/proxy: npx wrangler secret put MCP_SHARED_SECRET
+  // Ou Cloudflare Access (Managed OAuth) direto no Worker — não são sensíveis:
+  //   "vars": {
+  //     "ACCESS_TEAM_DOMAIN": "https://SEU-TIME.cloudflareaccess.com",
+  //     "ACCESS_AUD": "<AUD tag da app Access>"
+  //   }
+}

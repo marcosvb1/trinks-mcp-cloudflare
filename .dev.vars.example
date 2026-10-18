@@ -1,0 +1,24 @@
+# Copy to `.dev.vars` (gitignored) and fill in. Loaded automatically by `wrangler dev`.
+
+# ── Trinks: uma unidade ──────────────────────────────────────────────────────
+# API key — gerada em trinks.com › Minha Área › Meu Cadastro.
+TRINKS_API_KEY="your-trinks-api-key"
+# ID do estabelecimento (clínica/salão) enviado no header `estabelecimentoId`.
+TRINKS_ESTABELECIMENTO_ID="your-establishment-id"
+
+# ── Trinks: várias unidades (opcional; substitui as duas acima) ───────────────
+# JSON numa linha: unidade → estabelecimento + nome da variável com a API key.
+# TRINKS_UNIDADES='{"matriz":{"estabelecimentoId":"123456","apiKey":"MATRIZ_APIKEY"},"filial":{"estabelecimentoId":"654321","apiKey":"FILIAL_APIKEY"}}'
+# MATRIZ_APIKEY="api-key-da-matriz"
+# FILIAL_APIKEY="api-key-da-filial"
+
+# ── Auth (dev local) ─────────────────────────────────────────────────────────
+# Em dev, o gate é o header `x-mcp-secret` comparado contra este valor.
+# Gere: openssl rand -hex 32
+MCP_SHARED_SECRET="generate-a-long-random-string"
+
+# ── Auth (produção = Cloudflare Access / Managed OAuth) ───────────────────────
+# NÃO são usados em dev. Em produção, setar os dois (via `vars` no wrangler.jsonc
+# ou secrets) faz o Worker EXIGIR um Access JWT válido e ignorar o secret header.
+#   ACCESS_TEAM_DOMAIN="https://SEU-TIME.cloudflareaccess.com"
+#   ACCESS_AUD="<Application Audience (AUD) tag da app Access>"
