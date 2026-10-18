@@ -71,6 +71,13 @@ curl -s -X POST http://localhost:8787/mcp \
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
 ```
 
+Conferir as tools contra o OpenAPI do Trinks (o CI roda isso em todo push/PR e toda semana — falha se uma tool sair do contrato ou se o Trinks adicionar uma operação sem tool):
+
+```bash
+npm run check:spec              # spec ao vivo
+npm run check:spec -- spec.json # cópia local
+```
+
 Ou via inspector visual: `npm run inspect` e aponte pra `http://localhost:8787/mcp` com o header `x-mcp-secret`.
 
 ## Deploy
